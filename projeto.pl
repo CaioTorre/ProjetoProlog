@@ -1,9 +1,16 @@
 acesso(campinas, "São Paulo", anhanguera, 90, (0:50)).
 acesso(campinas, "São Paulo", bandeirantes, 95, (0:45)).
-acesso(campinas, araras, rod1, 80, (0:55)).
-acesso(araras, "Rio Claro", rod2, 30, (0:20)).
-acesso(araras, limeira, rod3, 40, (0:25)).
-acesso(campinas, limeira, rod4, 50, (0:35)).
+acesso(araras, "Rio Claro", "Wilson Finardi", 33, (0:40)).
+acesso(araras, "Rio Claro", "BR-364", 47, (0:46)).
+acesso(araras, limeira, "BR-050", 40, (0:40)).
+acesso("Rio Claro", limeira, "BR-364", 30, (0:32)).
+acesso(limeira, sumaré, "BR-050", 40, (0:36)).
+acesso(limeira, sumaré, bandeirantes, 54, (0:40)).
+acesso(sumaré, "Monte Mor", "Norma Marsom Biondo", 18, (0:23)).
+acesso(sumaré, campinas, "BR-050", 30, (0:28)).
+acesso(sumaré, campinas, bandeirantes, 33, (0:31)).
+acesso(campinas, indaiatuba, "Santos Dumont", 29, (0:29)).
+acesso(campinas, vinhedo, "BR-050", 21, (0:27)).
 
 % acesso(Origem, Destino, Rodovia, Distancia, Tempo) :- !,acesso(Destino,
 % Origem, Rodovia, Distancia, Tempo).
@@ -44,6 +51,20 @@ somatempo((H1:M1),(H2:M2),(Hf:Mf)) :-
     Hf is H1 + H2, !;
     Mf is M1 + M2 - 60,
     Hf is H1 + H2 + 1.
+% --------------------- 2.1 - Caminho Otimizado ---------------
+caminhoSimplificado(CidadeA,CidadeB,Rodovias) :-
+    caminho(CidadeA,CidadeB,Cam),
+    removeConsec(_,Cam,Rodovias).
+
+% --------------------- 2.2 - Caminhos Otimizados -------------
+caminhosSimplificados(CidadeA,CidadeB,ListaRodovias) :-
+    findall(Rodovias, caminho(CidadeA,CidadeB,Rodovias), Lista),
+    stepSimplificaCaminhos(Lista,ListaRodovias).
+
+stepSimplificaCaminhos([],[]).
+stepSimplificaCaminhos([Original|Tail],[Otimizada,Tail2]) :-
+    removeConsec(_,Original,Otimizada),
+    stepOtimizaCaminhos(Tail,Tail2).
 
 % --------------------- 3 - Menor Caminho ---------------------
 menorCaminho(CidadeA,CidadeB,CaminhoKm) :-
@@ -81,3 +102,20 @@ encontraMenorTempo([(H1:M1),(H2:M2)|Tail],Menor) :-
     M1 < M2,
     encontraMenorTempo([(H1:M1)|Tail],Menor),!;
     encontraMenorTempo([(H2:M2)|Tail],Menor),!.
+
+% --------------------- UTILs ---------------------------------
+
+removeConsec(Ultimo,[],[Ultimo]).
+removeConsec(Atual,[Atual|Tail], Lista) :-
+    removeConsec(Atual, Tail, Lista),!.
+removeConsec(Atual,[Head|Tail],[Atual|Lista]) :-
+    removeConsec(Head, Tail, Lista).
+
+
+
+
+
+
+
+
+
