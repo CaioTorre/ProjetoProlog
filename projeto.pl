@@ -12,6 +12,9 @@ acesso(sumaré, campinas, bandeirantes, 33, (0:31)).
 acesso(campinas, indaiatuba, "Santos Dumont", 29, (0:29)).
 acesso(campinas, vinhedo, "BR-050", 21, (0:27)).
 
+acesso(vinhedo, indaiatuba, asdf, 20, (0:30)).
+acesso("São Paulo", "Monte Mor", fdsa, 30, (0:20)).
+
 % acesso(Origem, Destino, Rodovia, Distancia, Tempo) :- !,acesso(Destino,
 % Origem, Rodovia, Distancia, Tempo).
 
@@ -64,7 +67,7 @@ caminhosSimplificados(CidadeA,CidadeB,ListaRodovias) :-
 stepSimplificaCaminhos([],[]).
 stepSimplificaCaminhos([Original|Tail],[Otimizada,Tail2]) :-
     removeConsec(_,Original,Otimizada),
-    stepOtimizaCaminhos(Tail,Tail2).
+    stepSimplificaCaminhos(Tail,Tail2).
 
 % --------------------- 3 - Menor Caminho ---------------------
 menorCaminho(CidadeA,CidadeB,CaminhoKm) :-
@@ -111,11 +114,34 @@ removeConsec(Atual,[Atual|Tail], Lista) :-
 removeConsec(Atual,[Head|Tail],[Atual|Lista]) :-
     removeConsec(Head, Tail, Lista).
 
+listaCidades(Lista) :-
+    findall(X, acesso(X,_,_,_,_), L1),
+    findall(X, acesso(_,X,_,_,_), L2),
+    cat(L1,L2,L),
+    sort(L,Lista).
 
+cat([],L,L).
+cat([H|T],L2,[H|L]) :-
+    cat(T,L2,L).
 
+len([],0).
+len([_|T], L) :-
+    len(T,L2),
+    L is L2 + 1.
 
+caminhoCidades(CidadeA,CidadeA,Passadas,[CidadeA|Passadas]).
+caminhoCidades(CidadeA,CidadeB,Caminho,Passadas) :-
+    vai(CidadeA,CidadeC,_,_,_),
+    naoexiste(CidadeC,Caminho),
+    caminhoCidades(CidadeC,CidadeB,[CidadeA|Caminho],Passadas).
 
+hamiltonian(Resultado) :-
+    findall(X,hamiltonianPath(X),L),
+    sort(L,Resultado).
 
-
-
-
+hamiltonianPath(Resultado) :-
+    caminhoCidades(_,_,[],Resultado),
+    listaCidades(Todas),
+    len(Resultado,LenCaminho),
+    len(Todas,LenTodas),
+    =(LenCaminho, LenTodas).
