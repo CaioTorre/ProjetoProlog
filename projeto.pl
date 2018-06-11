@@ -1,19 +1,19 @@
-acesso(campinas, "São Paulo", anhanguera, 90, (0:50)).
-acesso(campinas, "São Paulo", bandeirantes, 95, (0:45)).
+acesso(campinas, "SÃ£o Paulo", anhanguera, 90, (0:50)).
+acesso(campinas, "SÃ£o Paulo", bandeirantes, 95, (0:45)).
 acesso(araras, "Rio Claro", "Wilson Finardi", 33, (0:40)).
 acesso(araras, "Rio Claro", "BR-364", 47, (0:46)).
 acesso(araras, limeira, "BR-050", 40, (0:40)).
 acesso("Rio Claro", limeira, "BR-364", 30, (0:32)).
-acesso(limeira, sumaré, "BR-050", 40, (0:36)).
-acesso(limeira, sumaré, bandeirantes, 54, (0:40)).
-acesso(sumaré, "Monte Mor", "Norma Marsom Biondo", 18, (0:23)).
-acesso(sumaré, campinas, "BR-050", 30, (0:28)).
-acesso(sumaré, campinas, bandeirantes, 33, (0:31)).
+acesso(limeira, sumarÃ©, "BR-050", 40, (0:36)).
+acesso(limeira, sumarÃ©, bandeirantes, 54, (0:40)).
+acesso(sumarÃ©, "Monte Mor", "Norma Marsom Biondo", 18, (0:23)).
+acesso(sumarÃ©, campinas, "BR-050", 30, (0:28)).
+acesso(sumarÃ©, campinas, bandeirantes, 33, (0:31)).
 acesso(campinas, indaiatuba, "Santos Dumont", 29, (0:29)).
 acesso(campinas, vinhedo, "BR-050", 21, (0:27)).
 
 acesso(vinhedo, indaiatuba, asdf, 20, (0:30)).
-acesso("São Paulo", "Monte Mor", fdsa, 30, (0:20)).
+acesso("SÃ£o Paulo", "Monte Mor", fdsa, 30, (0:20)).
 
 % acesso(Origem, Destino, Rodovia, Distancia, Tempo) :- !,acesso(Destino,
 % Origem, Rodovia, Distancia, Tempo).
@@ -27,7 +27,7 @@ rotadireta(CidadeA,CidadeB,Rodovia) :- vai(CidadeA,CidadeB,Rodovia,_,_).
 
 % --------------------- 2 - Caminho ---------------------------
 caminho(CidadeA, CidadeA, []) :- !.
-caminho(CidadeA, CidadeB, [Rodovia]) :- vai(CidadeA,CidadeB,Rodovia,_,_),!.
+% caminho(CidadeA, CidadeB, [Rodovia]) :- vai(CidadeA,CidadeB,Rodovia,_,_),!.
 caminho(CidadeA, CidadeB, [HeadRod|TailRod]) :-
     stepcaminho(CidadeA, CidadeB, [HeadRod|TailRod], [],_,_).
 %caminho(CidadeA, CidadeB, [HeadRod|TailRod]) :-
